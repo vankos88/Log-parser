@@ -1,0 +1,11 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1051" d:DesignHeight="814"
+             x:Class="LogParser.Views.MainView">
+  <StackPanel>
+    <TextBlock Margin="4" Text="Paths:"></TextBlock>
+    <TextBox Margin="4" MinWidth="558" Height="115"></TextBox>
+  </StackPanel>
+</UserControl>
