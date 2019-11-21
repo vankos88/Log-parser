@@ -6,6 +6,10 @@ namespace LogParser.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        public string Greeting => "Hello World!";
+        public MainWindowViewModel()
+        {
+            LogParser = new LogParserViewModel();
+        }
+        public LogParserViewModel LogParser { get; }
     }
 }

@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace LogParser.Views
 {
-    public class MainView : UserControl
+    public class LogParserView : UserControl
     {
-        public MainView()
+        public LogParserView()
         {
             this.InitializeComponent();
         }

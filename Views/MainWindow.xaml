@@ -5,6 +5,6 @@
         Width="1036" Height="800"
         x:Class="LogParser.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-        Title="LogParser">
-  <views:MainView/>
+        Title="LogParser"
+        Content="{Binding LogParser}">
 </Window>
