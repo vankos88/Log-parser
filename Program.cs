@@ -1,6 +1,7 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.Logging.Serilog;
+using LogParser.Managers;
 using LogParser.ViewModels;
 using LogParser.Views;
 
@@ -26,7 +27,7 @@ namespace LogParser
         {
             var window = new MainWindow
             {
-                DataContext = new MainWindowViewModel(),
+                DataContext = new MainWindowViewModel(new LogParserManager()),
             };
 
             app.Run(window);

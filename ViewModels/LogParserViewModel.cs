@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LogParser.Managers;
+using LogParser.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,11 +8,14 @@ namespace LogParser.ViewModels
 {
     public class LogParserViewModel : ViewModelBase
     {
-        public LogParserViewModel()
+        public LogParserManager _manager { get; }
+        public LogParserViewModel(LogParserManager manager)
         {
-            IncludeFileInfo = true;
-        }
-        public bool IncludeFileInfo { get; set; }
+            _manager = manager;
+            Model = new LogParserModel();
+        } 
+
+        public LogParserModel Model { get; set; }
 
     }
 }
