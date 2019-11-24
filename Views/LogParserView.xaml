@@ -6,11 +6,11 @@
              x:Class="LogParser.Views.LogParserView">
   <StackPanel>
     <TextBlock Margin="6,6,0,1" Text="Paths:"></TextBlock>
-    <TextBox HorizontalAlignment="Left" Margin="6,0,0,6" Width="558" Height="115"></TextBox>
+    <TextBox HorizontalAlignment="Left" Margin="6,0,0,6" Width="558" Height="115" Text="{Binding Model.Paths}"></TextBox>
     <TextBlock Margin="6,12,0,1" Text="File masks:"></TextBlock>
-    <TextBox HorizontalAlignment="Left" Margin="6,0,0,6" Width="558" Height="60"></TextBox>
+    <TextBox HorizontalAlignment="Left" Margin="6,0,0,6" Width="558" Height="60" Text="{Binding Model.Mask}"></TextBox>
     <StackPanel Orientation="Horizontal">
-      <Button HorizontalAlignment="Left" Margin="6,1,0,6" Width="75" Height="23">
+      <Button HorizontalAlignment="Left" Margin="6,1,0,6" Width="75" Height="23" Command="{Binding FindFiles}">
         <TextBlock>Find files</TextBlock>
       </Button>
       <Button HorizontalAlignment="Left" Margin="12,1,0,6" Width="75" Height="23">
@@ -19,7 +19,7 @@
     </StackPanel>
     <TextBlock Margin="6,12,0,1" Text="Free text search:"></TextBlock>
     <StackPanel Orientation="Horizontal">
-      <TextBox HorizontalAlignment="Left" Margin="6,0,0,6" Width="558" Height="72"></TextBox>
+      <TextBox HorizontalAlignment="Left" Margin="6,0,0,6" Width="558" Height="72" Text="{Binding Model.SearchLine}"></TextBox>
       <CheckBox Margin="12,0,0,6" VerticalAlignment="Bottom" IsChecked="{Binding Model.IncludeFileInfo}">Include file info in result</CheckBox>
     </StackPanel>
     <StackPanel Margin="0,32,0,0" Orientation="Horizontal">
@@ -30,7 +30,7 @@
         <TextBlock>Cancel</TextBlock>
       </Button>
     </StackPanel>
-    <TextBox HorizontalAlignment="Left" Margin="6,12,0,6" Width="1024" Height="287"></TextBox>
+    <TextBox HorizontalAlignment="Left" Margin="6,12,0,6" Width="1024" Height="287" Text="{Binding Model.ResultDisplay}" IsReadOnly="True"></TextBox>
     <TextBlock Margin="6,12,0,1" Text="Elapsed time: -/-"></TextBlock>
   </StackPanel>
 </UserControl>

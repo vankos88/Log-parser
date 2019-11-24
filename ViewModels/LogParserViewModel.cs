@@ -17,5 +17,9 @@ namespace LogParser.ViewModels
 
         public LogParserModel Model { get; set; }
 
+        public void FindFiles()
+        {
+            Model.ResultDisplay = "byaka";
+        }
     }
 }
