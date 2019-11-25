@@ -8,7 +8,7 @@
     <TextBlock Margin="6,6,0,1" Text="Paths:"></TextBlock>
     <TextBox HorizontalAlignment="Left" Margin="6,0,0,6" Width="558" Height="115" Text="{Binding Model.Paths}"></TextBox>
     <TextBlock Margin="6,12,0,1" Text="File masks:"></TextBlock>
-    <TextBox HorizontalAlignment="Left" Margin="6,0,0,6" Width="558" Height="60" Text="{Binding Model.Mask}"></TextBox>
+    <TextBox HorizontalAlignment="Left" Margin="6,0,0,6" Width="558" Height="60" Text="{Binding Model.Masks}"></TextBox>
     <StackPanel Orientation="Horizontal">
       <Button HorizontalAlignment="Left" Margin="6,1,0,6" Width="75" Height="23" Command="{Binding FindFiles}">
         <TextBlock>Find files</TextBlock>

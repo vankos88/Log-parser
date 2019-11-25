@@ -16,6 +16,15 @@ namespace LogParser.ViewModels
 
         public void FindFiles()
         {
+            CleanDisplay();
+
+            var result = _manager.FindFiles(Model);
+            Model.ResultDisplay = result;
+        }
+
+        public void CleanDisplay()
+        {
+            Model.ResultDisplay = string.Empty;
         }
     }
 }
