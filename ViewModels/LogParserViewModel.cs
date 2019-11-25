@@ -10,7 +10,7 @@ namespace LogParser.ViewModels
         {
             _manager = manager;
             Model = new LogParserModel();
-        } 
+        }
 
         public LogParserModel Model { get; set; }
 
@@ -18,13 +18,38 @@ namespace LogParser.ViewModels
         {
             CleanDisplay();
 
-            var result = _manager.FindFiles(Model);
-            Model.ResultDisplay = result;
+            _manager.FindFiles(Model);
         }
 
         public void CleanDisplay()
         {
             Model.ResultDisplay = string.Empty;
+            Model.ElapsedTime = "Elapsed time: -/-";
+        }
+
+        public void Cancel()
+        {
+            _manager.Cancel();
+        }
+
+        public void Search()
+        {
+            CleanDisplay();
+            FreezeUI();
+
+            _manager.Search(Model);
+
+            UnfreezeUI();
+        }
+
+        public void FreezeUI()
+        {
+
+        }
+
+        public void UnfreezeUI()
+        {
+
         }
     }
 }

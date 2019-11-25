@@ -16,9 +16,17 @@ namespace LogParser.Models
             set => this.RaiseAndSetIfChanged(ref resultDisplay, value);
         }
 
+        private string elapsedTime;
+        public string ElapsedTime
+        {
+            get => elapsedTime;
+            set => this.RaiseAndSetIfChanged(ref elapsedTime, value);
+        }
+
         public LogParserModel()
         {
             IncludeFileInfo = true;
+            elapsedTime = "Elapsed time: -/-";
         }
     }
 }
