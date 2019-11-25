@@ -34,9 +34,9 @@ namespace LogParser.Managers
 
         private string[] GetFiles(string maskText, string pathsText)
         {
-            var paths = pathsText.Split('\n').Where(x => !String.IsNullOrEmpty(x)).ToArray();
+            var paths = pathsText.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
-            var masks = maskText.Split('\n');
+            var masks = maskText.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
             var list = new List<string>();
 
             foreach (var path in paths)
