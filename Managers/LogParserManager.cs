@@ -127,8 +127,11 @@ namespace LogParser.Managers
 
             finally
             {
-                _cts.Dispose();
-                _cts = null;
+                if (_cts != null)
+                {
+                    _cts.Dispose();
+                    _cts = null;
+                }
             }
 
             return result;
