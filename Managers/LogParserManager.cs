@@ -146,58 +146,52 @@ namespace LogParser.Managers
 
         private void ProcessFile(string filePath, string searchString, ConcurrentBag<LineInfo> bag, bool includeFileInfo)
         {
-            using (var file = File.OpenRead(filePath))
+            using var file = File.OpenRead(filePath);
+
+            var fileExtension = Path.GetExtension(filePath);
+
+            var isSupportedArchive =
+                fileExtension.Equals(".rar") || fileExtension.Equals(".zip") || fileExtension.Equals(".tar")
+                || fileExtension.Equals(".gz");
+
+            if (isSupportedArchive)
             {
-                var fileExtension = Path.GetExtension(filePath);
+                using var reader = ReaderFactory.Open(file);
 
-                var isSupportedArchive =
-                    fileExtension.Equals(".rar") || fileExtension.Equals(".zip") || fileExtension.Equals(".tar")
-                    || fileExtension.Equals(".gz");
+                reader.MoveToNextEntry();
+                using var entryStream = reader.OpenEntryStream();
 
-                if (isSupportedArchive)
-                {
-                    using (var reader = ReaderFactory.Open(file))
-                    {
-                        reader.MoveToNextEntry();
-                        using (var entryStream = reader.OpenEntryStream())
-                        {
-                            ProcessStream(entryStream, bag, filePath, searchString, includeFileInfo);
-                        }
-                    }
-                }
-
-                else
-                    ProcessStream(file, bag, filePath, searchString, includeFileInfo);
+                ProcessStream(entryStream, bag, filePath, searchString, includeFileInfo);
             }
+
+            else
+                ProcessStream(file, bag, filePath, searchString, includeFileInfo);
         }
 
         private void ProcessStream(Stream stream, ConcurrentBag<LineInfo> bag, string filePath, string searchString, bool includeFileInfo)
         {
-            using (BufferedStream bs = new BufferedStream(stream))
+            using var bs = new BufferedStream(stream);
+            using var sr = new StreamReader(bs);
+
+            string line;
+            int counter = 0;
+            while ((line = sr.ReadLine()) != null)
             {
-                using (StreamReader sr = new StreamReader(bs))
+                counter++;
+                var path = Path.GetDirectoryName(filePath);
+                var fileName = Path.GetFileName(filePath);
+
+                if (line.ToLower().Contains(searchString))
                 {
-                    string line;
-                    int counter = 0;
-                    while ((line = sr.ReadLine()) != null)
+                    var str = string.Empty;
+                    if (includeFileInfo)
                     {
-                        counter++;
-                        var path = Path.GetDirectoryName(filePath);
-                        var fileName = Path.GetFileName(filePath);
-
-                        if (line.ToLower().Contains(searchString))
-                        {
-                            var str = string.Empty;
-                            if (includeFileInfo)
-                            {
-                                str += $"File: {filePath}\n";
-                                str += $"Line: {counter}\n";
-                            }
-
-                            str += line + "\n";
-                            bag.Add(new LineInfo { Path = path, FileName = fileName, Line = str });
-                        }
+                        str += $"File: {filePath}\n";
+                        str += $"Line: {counter}\n";
                     }
+
+                    str += line + "\n";
+                    bag.Add(new LineInfo { Path = path, FileName = fileName, Line = str });
                 }
             }
         }
