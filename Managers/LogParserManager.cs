@@ -109,7 +109,13 @@ namespace LogParser.Managers
                     ProcessFile(file, searchString, bag, includeFileInfo);
                 });
 
-                bag.ToList().OrderBy(x => x.Path).ThenBy(y => y.FileName).ThenBy(z => z.Line).Select(x => sb.AppendLine(x.Line)).ToList();
+                bag
+                    .OrderBy(x => x.Path)
+                    .ThenBy(y => y.FileName)
+                    .ThenBy(z => z.Line)
+                    .Take(bag.Count > 100000 ? 100000 : bag.Count) // show only the first 100k entries.
+                    .Select(x => sb.AppendLine(x.Line))
+                    .ToList();
 
                 result = $"Found {bag.Count} times\n\n" + sb;
 
