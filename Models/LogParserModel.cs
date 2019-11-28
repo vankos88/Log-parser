@@ -8,6 +8,7 @@ namespace LogParser.Models
         public string Masks { get; set; }
         public string SearchLine { get; set; }
         public bool IncludeFileInfo { get; set; }
+        public bool IncludeSubdirectories { get; set; }
 
         private string resultDisplay;
         public string ResultDisplay 
@@ -27,6 +28,7 @@ namespace LogParser.Models
         {
             IncludeFileInfo = true;
             elapsedTime = "Elapsed time: -/-";
+            IncludeSubdirectories = true;
         }
     }
 }

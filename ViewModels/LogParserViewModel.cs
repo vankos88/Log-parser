@@ -1,5 +1,6 @@
 ﻿using LogParser.Managers;
 using LogParser.Models;
+using System;
 
 namespace LogParser.ViewModels
 {
@@ -18,7 +19,15 @@ namespace LogParser.ViewModels
         {
             CleanDisplay();
 
-            _manager.FindFiles(Model);
+            try
+            {
+                _manager.FindFiles(Model);
+            }
+
+            catch (Exception ex)
+            {
+                Model.ResultDisplay = ex.ToString();
+            }
         }
 
         public void CleanDisplay()

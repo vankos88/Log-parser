@@ -5,15 +5,17 @@
              mc:Ignorable="d" d:DesignWidth="1036" d:DesignHeight="800"
              x:Class="LogParser.Views.LogParserView">
   <StackPanel>
+
     <TextBlock Margin="6,6,0,1" Text="Paths:"></TextBlock>
-    <TextBox HorizontalAlignment="Left" Margin="6,0,0,6" Width="558" Height="115" Text="{Binding Model.Paths}" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
+    <StackPanel Orientation="Horizontal">
+      <TextBox HorizontalAlignment="Left" Margin="6,0,0,6" Width="558" Height="115" Text="{Binding Model.Paths}" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
+      <CheckBox Margin="12,0,0,6" VerticalAlignment="Bottom" IsChecked="{Binding Model.IncludeSubdirectories}">Include subdirectories</CheckBox>
+    </StackPanel>
     <TextBlock Margin="6,12,0,1" Text="File masks:"></TextBlock>
     <TextBox HorizontalAlignment="Left" Margin="6,0,0,6" Width="558" Height="60" Text="{Binding Model.Masks}" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
-    <StackPanel Orientation="Horizontal">
-      <Button HorizontalAlignment="Left" Margin="6,1,0,6" Width="75" Height="23" Command="{Binding FindFiles}">
-        <TextBlock>Find files</TextBlock>
-      </Button>
-    </StackPanel>
+    <Button HorizontalAlignment="Left" Margin="6,1,0,6" Width="75" Height="23" Command="{Binding FindFiles}">
+      <TextBlock>Find files</TextBlock>
+    </Button>
     <TextBlock Margin="6,12,0,1" Text="Free text search:"></TextBlock>
     <StackPanel Orientation="Horizontal">
       <TextBox HorizontalAlignment="Left" Margin="6,0,0,6" Width="558" Height="72" Text="{Binding Model.SearchLine}" AcceptsReturn="True"></TextBox>

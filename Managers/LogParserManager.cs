@@ -18,7 +18,7 @@ namespace LogParser.Managers
 
         public void FindFiles(LogParserModel model)
         {
-            var files = GetFiles(model.Masks, model.Paths);
+            var files = GetFiles(model);
 
             var sb = new StringBuilder();
             sb.AppendLine($"Total files found:{files.Length}");
@@ -32,26 +32,29 @@ namespace LogParser.Managers
             model.ResultDisplay = sb.ToString();
         }
 
-        private string[] GetFiles(string maskText, string pathsText)
+        private string[] GetFiles(LogParserModel model)
         {
-            var paths = pathsText.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Distinct().ToArray();
+            var paths = model.Paths.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Distinct().ToArray();
 
-            var masks = maskText.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Distinct().ToArray();
+            var masks = model.Masks?.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Distinct().ToArray();
+
             var list = new List<string>();
 
             foreach (var path in paths)
             {
-                if (masks.Length > 0)
+                var searchOption = model.IncludeSubdirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+
+                if (masks != null && masks.Length > 0)
                 {
                     foreach (var mask in masks)
                     {
-                        var files = Directory.GetFiles(path, mask);
+                        var files = Directory.GetFiles(path, mask, searchOption);
                         list.AddRange(files);
                     }
                 }
                 else
                 {
-                    var files = Directory.GetFiles(path);
+                    var files = Directory.GetFiles(path, "*", searchOption);
                     list.AddRange(files);
                 }
             }
@@ -78,11 +81,7 @@ namespace LogParser.Managers
                 return;
             }
 
-            var maskText = model.Masks;
-            var pathsText = model.Paths;
-            var includeFileInfo = model.IncludeFileInfo;
-
-            var result = await Task.Run(() => ProcessFiles(searchString, pathsText, maskText, includeFileInfo));
+            var result = await Task.Run(() => ProcessFiles(searchString, model));
 
             model.ResultDisplay = result;
 
@@ -90,10 +89,12 @@ namespace LogParser.Managers
             model.ElapsedTime = $"Elapsed time: {elapsedTime.Elapsed.ToString()}";
         }
 
-        private string ProcessFiles(string searchString, string pathsText, string maskText, bool includeFileInfo)
+        private string ProcessFiles(string searchString, LogParserModel model)
         {
+            var includeFileInfo = model.IncludeFileInfo;
+
             var result = string.Empty;
-            var files = GetFiles(maskText, pathsText);
+            var files = GetFiles(model);
 
             _cts = new CancellationTokenSource();
             var token = _cts.Token;
