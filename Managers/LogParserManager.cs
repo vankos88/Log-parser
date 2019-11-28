@@ -148,7 +148,12 @@ namespace LogParser.Managers
             using (var file = File.OpenRead(filePath))
             {
                 var fileExtension = Path.GetExtension(filePath);
-                if (fileExtension.Equals(".rar") || fileExtension.Equals(".zip"))
+
+                var isSupportedArchive =
+                    fileExtension.Equals(".rar") || fileExtension.Equals(".zip") || fileExtension.Equals(".tar")
+                    || fileExtension.Equals(".gz");
+
+                if (isSupportedArchive)
                 {
                     using (var reader = ReaderFactory.Open(file))
                     {
