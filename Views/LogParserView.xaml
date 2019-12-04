@@ -29,7 +29,9 @@
         <TextBlock>Cancel</TextBlock>
       </Button>
     </StackPanel>
-    <TextBox HorizontalAlignment="Left" Margin="6,12,0,6" Width="1024" Height="287" Text="{Binding Model.ResultDisplay}" IsReadOnly="True"></TextBox>
+    <Grid RowDefinitions="*, Auto" ColumnDefinitions="*"  Width="1024" Height="287">
+      <ListBox Grid.Row="0" Grid.Column="0"  Items="{Binding Model.ResultDisplay}" />
+    </Grid>
     <TextBlock Margin="6,12,0,1" Text="{Binding Model.ElapsedTime}"></TextBlock>
   </StackPanel>
 </UserControl>

@@ -1,4 +1,5 @@
 ﻿using ReactiveUI;
+using System.Collections.Generic;
 
 namespace LogParser.Models
 {
@@ -10,8 +11,8 @@ namespace LogParser.Models
         public bool IncludeFileInfo { get; set; }
         public bool IncludeSubdirectories { get; set; }
 
-        private string resultDisplay;
-        public string ResultDisplay 
+        private List<string> resultDisplay;
+        public List<string> ResultDisplay 
         {
             get => resultDisplay;
             set => this.RaiseAndSetIfChanged(ref resultDisplay, value);

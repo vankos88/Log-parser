@@ -20,16 +20,11 @@ namespace LogParser.Managers
         {
             var files = GetFiles(model);
 
-            var sb = new StringBuilder();
-            sb.AppendLine($"Total files found:{files.Length}");
-            for (int i = 0; i < files.Length; i++)
-            {
-                sb.AppendLine($"{i + 1}. {files[i]}");
-            }
+            var result = files.ToList();
+            result.Insert(0, $"Total files found:{files.Length}");
+            result.Add("---------END---------");
 
-            sb.AppendLine("---------END---------");
-
-            model.ResultDisplay = sb.ToString();
+            model.ResultDisplay = result;
         }
 
         private string[] GetFiles(LogParserModel model)
@@ -73,13 +68,14 @@ namespace LogParser.Managers
             Stopwatch elapsedTime = new Stopwatch();
             elapsedTime.Start();
 
-            string searchString = model.SearchLine.ToLower();
-
-            if (string.IsNullOrWhiteSpace(searchString))
+            if (string.IsNullOrWhiteSpace(model.SearchLine))
             {
-                model.ResultDisplay = "Empty search string";
+                model.ResultDisplay = new List<string> { "Empty search string" };
+                elapsedTime.Stop();
                 return;
             }
+
+            string searchString = model.SearchLine.ToLower();
 
             var result = await Task.Run(() => ProcessFiles(searchString, model));
 
@@ -89,11 +85,11 @@ namespace LogParser.Managers
             model.ElapsedTime = $"Elapsed time: {elapsedTime.Elapsed.ToString()}";
         }
 
-        private string ProcessFiles(string searchString, LogParserModel model)
+        private List<string> ProcessFiles(string searchString, LogParserModel model)
         {
             var includeFileInfo = model.IncludeFileInfo;
 
-            var result = string.Empty;
+            var result = new List<string>();
             var files = GetFiles(model);
 
             _cts = new CancellationTokenSource();
@@ -110,26 +106,28 @@ namespace LogParser.Managers
                     ProcessFile(file, searchString, bag, includeFileInfo);
                 });
 
-                bag
-                    .OrderBy(x => x.Path)
-                    .ThenBy(y => y.FileName)
-                    .ThenBy(z => z.Line)
-                    .Take(bag.Count > 100000 ? 100000 : bag.Count) // show only the first 100k entries.
-                    .Select(x => sb.AppendLine(x.Line))
-                    .ToList();
+                result = bag
+                      .OrderBy(x => x.Path)
+                      .ThenBy(y => y.FileName)
+                      .ThenBy(z => z.Line)
+                      .Select(g => g.Line)
+                      .ToList();
 
-                result = $"Found {bag.Count} times\n\n" + sb;
+                result.Insert(0, $"Found {bag.Count} times\n\n");
+
+
+                return result;
 
             }
 
             catch (OperationCanceledException)
             {
-                result = $"Search has been canceled";
+                result = new List<string> { $"Search has been canceled" };
             }
 
             catch (Exception ex)
             {
-                result = $"ERROR: {ex}";
+                result = new List<string> { $"ERROR: {ex}" };
             }
 
             finally

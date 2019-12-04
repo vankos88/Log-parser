@@ -1,6 +1,7 @@
 ﻿using LogParser.Managers;
 using LogParser.Models;
 using System;
+using System.Collections.Generic;
 
 namespace LogParser.ViewModels
 {
@@ -26,13 +27,13 @@ namespace LogParser.ViewModels
 
             catch (Exception ex)
             {
-                Model.ResultDisplay = ex.ToString();
+                Model.ResultDisplay = new List<string> { ex.ToString() };
             }
         }
 
         public void CleanDisplay()
         {
-            Model.ResultDisplay = string.Empty;
+            Model.ResultDisplay = new List<string> { string.Empty };
             Model.ElapsedTime = "Elapsed time: -/-";
         }
 
