@@ -63,7 +63,7 @@ namespace LogParser.Managers
                 _cts.Cancel();
         }
 
-        public async void Search(LogParserModel model)
+        public async Task Search(LogParserModel model)
         {
             Stopwatch elapsedTime = new Stopwatch();
             elapsedTime.Start();
@@ -97,8 +97,6 @@ namespace LogParser.Managers
 
             try
             {
-                var sb = new StringBuilder();
-
                 var bag = new ConcurrentBag<LineInfo>();
 
                 Parallel.ForEach(files, new ParallelOptions { CancellationToken = token }, file =>

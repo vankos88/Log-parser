@@ -1,7 +1,9 @@
 ﻿using LogParser.Managers;
 using LogParser.Models;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
+using System.Reactive;
 
 namespace LogParser.ViewModels
 {
@@ -12,10 +14,11 @@ namespace LogParser.ViewModels
         {
             _manager = manager;
             Model = new LogParserModel();
+            Search = ReactiveCommand.CreateFromTask(() => _manager.Search(Model));;
         }
 
         public LogParserModel Model { get; set; }
-
+        public ReactiveCommand<Unit, Unit> Search { get; }
         public void FindFiles()
         {
             CleanDisplay();
@@ -40,26 +43,6 @@ namespace LogParser.ViewModels
         public void Cancel()
         {
             _manager.Cancel();
-        }
-
-        public void Search()
-        {
-            CleanDisplay();
-            FreezeUI();
-
-            _manager.Search(Model);
-
-            UnfreezeUI();
-        }
-
-        public void FreezeUI()
-        {
-
-        }
-
-        public void UnfreezeUI()
-        {
-
         }
     }
 }
