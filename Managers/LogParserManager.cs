@@ -16,15 +16,23 @@ namespace LogParser.Managers
     {
         CancellationTokenSource _cts;
 
-        public void FindFiles(LogParserModel model)
+        public async Task FindFiles(LogParserModel model)
         {
-            var files = GetFiles(model);
+            try
+            {
+                var files = await Task.Run(() => GetFiles(model));
 
-            var result = files.ToList();
-            result.Insert(0, $"Total files found:{files.Length}");
-            result.Add("---------END---------");
+                var result = files.ToList();
+                result.Insert(0, $"Total files found:{files.Length}");
+                result.Add("---------END---------");
 
-            model.ResultDisplay = result;
+                model.ResultDisplay = result;
+            }
+
+            catch (Exception ex)
+            {
+                model.ResultDisplay = new List<string> { ex.ToString() };
+            }
         }
 
         private string[] GetFiles(LogParserModel model)

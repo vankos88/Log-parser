@@ -10,39 +10,30 @@ namespace LogParser.ViewModels
     public class LogParserViewModel : ViewModelBase
     {
         public LogParserManager _manager { get; }
+        public LogParserModel Model { get; set; }
+
+        public CombinedReactiveCommand<Unit, Unit> Search { get; }
+        public CombinedReactiveCommand<Unit, Unit> FindFiles { get; }
+        public ReactiveCommand<Unit, Unit> Cancel { get; }
+        
+
         public LogParserViewModel(LogParserManager manager)
         {
             _manager = manager;
             Model = new LogParserModel();
-            Search = ReactiveCommand.CreateFromTask(() => _manager.Search(Model));;
-        }
 
-        public LogParserModel Model { get; set; }
-        public ReactiveCommand<Unit, Unit> Search { get; }
-        public void FindFiles()
-        {
-            CleanDisplay();
-
-            try
+            var cleanDisplay = ReactiveCommand.Create(() =>
             {
-                _manager.FindFiles(Model);
-            }
+                Model.ResultDisplay = new List<string> { string.Empty };
+                Model.ElapsedTime = "Elapsed time: -/-";
+            });
 
-            catch (Exception ex)
-            {
-                Model.ResultDisplay = new List<string> { ex.ToString() };
-            }
-        }
+            var search = ReactiveCommand.CreateFromTask(() => _manager.Search(Model));;
+            var findFiles = ReactiveCommand.CreateFromTask(() => _manager.FindFiles(Model)); 
 
-        public void CleanDisplay()
-        {
-            Model.ResultDisplay = new List<string> { string.Empty };
-            Model.ElapsedTime = "Elapsed time: -/-";
-        }
-
-        public void Cancel()
-        {
-            _manager.Cancel();
+            Search = ReactiveCommand.CreateCombined(new[] { search, cleanDisplay });
+            FindFiles = ReactiveCommand.CreateCombined(new[] { findFiles, cleanDisplay });
+            Cancel = ReactiveCommand.Create(() => _manager.Cancel());
         }
     }
 }
