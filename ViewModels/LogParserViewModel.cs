@@ -12,10 +12,10 @@ namespace LogParser.ViewModels
         public LogParserManager _manager { get; }
         public LogParserModel Model { get; set; }
 
-        public CombinedReactiveCommand<Unit, Unit> Search { get; }
-        public CombinedReactiveCommand<Unit, Unit> FindFiles { get; }
+        public ReactiveCommand<Unit, Unit> Search { get; }
+        public ReactiveCommand<Unit, Unit> FindFiles { get; }
         public ReactiveCommand<Unit, Unit> Cancel { get; }
-        
+
 
         public LogParserViewModel(LogParserManager manager)
         {
@@ -28,11 +28,9 @@ namespace LogParser.ViewModels
                 Model.ElapsedTime = "Elapsed time: -/-";
             });
 
-            var search = ReactiveCommand.CreateFromTask(() => _manager.Search(Model));;
-            var findFiles = ReactiveCommand.CreateFromTask(() => _manager.FindFiles(Model)); 
+            Search = ReactiveCommand.CreateFromTask(async  () => { Model.CleanDisplay(); await _manager.Search(Model); }); 
+            FindFiles = ReactiveCommand.CreateFromTask(async () => {  Model.CleanDisplay(); await _manager.FindFiles(Model); });
 
-            Search = ReactiveCommand.CreateCombined(new[] { search, cleanDisplay });
-            FindFiles = ReactiveCommand.CreateCombined(new[] { findFiles, cleanDisplay });
             Cancel = ReactiveCommand.Create(() => _manager.Cancel());
         }
     }

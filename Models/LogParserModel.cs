@@ -1,5 +1,6 @@
 ﻿using ReactiveUI;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LogParser.Models
 {
@@ -33,6 +34,31 @@ namespace LogParser.Models
         {
             get => elapsedTime;
             set => this.RaiseAndSetIfChanged(ref elapsedTime, value);
+        }
+
+        public void CleanDisplay()
+        {
+            ResultDisplay = new List<string> { string.Empty };
+            ElapsedTime = "Elapsed time: -/-";
+        }
+
+        public bool Validate()
+        {
+            var result = new List<string>();
+
+            if (string.IsNullOrEmpty(Paths))
+            {
+                result.Add("Empty paths");
+            }
+
+            if (string.IsNullOrWhiteSpace(SearchLine))
+            {
+                result.Add("Empty search string");
+            }
+
+            ResultDisplay = result;
+
+            return result.Count == 0;
         }
     }
 }

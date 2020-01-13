@@ -18,24 +18,29 @@ namespace LogParser.Managers
 
         public async Task FindFiles(LogParserModel model)
         {
-            try
+            if (!string.IsNullOrEmpty(model.Paths))
             {
-                var files = await Task.Run(() => GetFiles(model));
+                try
+                {
+                    var result = await Task.Run(() => GetFiles(model));
 
-                var result = files.ToList();
-                result.Insert(0, $"Total files found:{files.Length}");
-                result.Add("---------END---------");
+                    result.Insert(0, $"Total files found:{result.Count}");
+                    result.Add("---------END---------");
+                    model.ResultDisplay = result;
+                }
 
-                model.ResultDisplay = result;
+                catch (Exception ex)
+                {
+                    model.ResultDisplay = new List<string> { ex.ToString() };
+                }
             }
 
-            catch (Exception ex)
-            {
-                model.ResultDisplay = new List<string> { ex.ToString() };
-            }
+            else
+                model.ResultDisplay = new List<string> { "Empty paths" };
+
         }
 
-        private string[] GetFiles(LogParserModel model)
+        private List<string> GetFiles(LogParserModel model)
         {
             var paths = model.Paths.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Distinct().ToArray();
 
@@ -55,6 +60,7 @@ namespace LogParser.Managers
                         list.AddRange(files);
                     }
                 }
+
                 else
                 {
                     var files = Directory.GetFiles(path, "*", searchOption);
@@ -62,7 +68,7 @@ namespace LogParser.Managers
                 }
             }
 
-            return list.Distinct().ToArray();
+            return list.Distinct().ToList();
         }
 
         public void Cancel()
@@ -73,38 +79,35 @@ namespace LogParser.Managers
 
         public async Task Search(LogParserModel model)
         {
-            Stopwatch elapsedTime = new Stopwatch();
-            elapsedTime.Start();
-
-            if (string.IsNullOrWhiteSpace(model.SearchLine))
+            if (model.Validate())
             {
-                model.ResultDisplay = new List<string> { "Empty search string" };
+                Stopwatch elapsedTime = new Stopwatch();
+                elapsedTime.Start();
+
+                var result = await Task.Run(() => ProcessFiles(model));
+
+                model.ResultDisplay = result;
+
                 elapsedTime.Stop();
-                return;
+                model.ElapsedTime = $"Elapsed time: {elapsedTime.Elapsed.ToString()}";
             }
-
-            string searchString = model.SearchLine.ToLower();
-
-            var result = await Task.Run(() => ProcessFiles(searchString, model));
-
-            model.ResultDisplay = result;
-
-            elapsedTime.Stop();
-            model.ElapsedTime = $"Elapsed time: {elapsedTime.Elapsed.ToString()}";
         }
 
-        private List<string> ProcessFiles(string searchString, LogParserModel model)
+        private List<string> ProcessFiles(LogParserModel model)
         {
-            var includeFileInfo = model.IncludeFileInfo;
-
-            var result = new List<string>();
-            var files = GetFiles(model);
-
             _cts = new CancellationTokenSource();
             var token = _cts.Token;
 
+            var includeFileInfo = model.IncludeFileInfo;
+
+            var result = new List<string>();
+
             try
             {
+                var files = GetFiles(model);
+
+                string searchString = model.SearchLine.ToLower();
+
                 var bag = new ConcurrentBag<LineInfo>();
 
                 Parallel.ForEach(files, new ParallelOptions { CancellationToken = token }, file =>
@@ -120,10 +123,6 @@ namespace LogParser.Managers
                       .ToList();
 
                 result.Insert(0, $"Found {bag.Count} times\n\n");
-
-
-                return result;
-
             }
 
             catch (OperationCanceledException)
