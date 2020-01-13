@@ -116,9 +116,8 @@ namespace LogParser.Managers
                 });
 
                 result = bag
-                      .OrderBy(x => x.Path)
-                      .ThenBy(y => y.FileName)
-                      .ThenBy(z => z.Line)
+                      .OrderBy(x => x.FilePath)
+                      .ThenBy(y => y.RowNumber)
                       .Select(g => g.Line)
                       .ToList();
 
@@ -181,8 +180,6 @@ namespace LogParser.Managers
             while ((line = sr.ReadLine()) != null)
             {
                 counter++;
-                var path = Path.GetDirectoryName(filePath);
-                var fileName = Path.GetFileName(filePath);
 
                 if (line.ToLower().Contains(searchString))
                 {
@@ -194,7 +191,7 @@ namespace LogParser.Managers
                     }
 
                     str += line + "\n";
-                    bag.Add(new LineInfo { Path = path, FileName = fileName, Line = str });
+                    bag.Add(new LineInfo { FilePath = filePath, RowNumber = counter, Line = str });
                 }
             }
         }
