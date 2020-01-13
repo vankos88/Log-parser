@@ -160,10 +160,13 @@ namespace LogParser.Managers
             {
                 using var reader = ReaderFactory.Open(file);
 
-                reader.MoveToNextEntry();
-                using var entryStream = reader.OpenEntryStream();
+                while(reader.MoveToNextEntry())
+                {
+                    using var entryStream = reader.OpenEntryStream();
+                    var filePathInsideArchive = $"{filePath}\\{reader.Entry}";
 
-                ProcessStream(entryStream, bag, filePath, searchString, includeFileInfo);
+                    ProcessStream(entryStream, bag, filePathInsideArchive, searchString, includeFileInfo);
+                }
             }
 
             else
