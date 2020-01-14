@@ -1,0 +1,9 @@
+﻿DEBUG 02-06 02:51:58.6347 – a69640f7-d47d-4aa4-99c9-13cfd9ab93c2 WebApiApplication_BeginRequest 
+DEBUG 02-06 02:51:58.6382 – a69640f7-d47d-4aa4-99c9-13cfd9ab93c2 Starting KitchenAsync - Call redis
+DEBUG 02-06 02:51:58.9315 – b8a3bcee-e82e-4298-b27f-6481b256b5ad Finished KitchenAsync
+DEBUG 02-06 02:51:59.1285 – a69640f7-d47d-4aa4-99c9-13cfd9ab93c2 Call Webclient
+DEBUG 02-06 02:51:59.1686 – 54218fab-bd1b-4c77-9ff8-ebef838dfb82 WebApiApplication_BeginRequest
+DEBUG 02-06 02:51:59.1746 – 54218fab-bd1b-4c77-9ff8-ebef838dfb82 Starting KitchenAsync - Call redis
+DEBUG 02-06 02:51:59.4378 – a69640f7-d47d-4aa4-99c9-13cfd9ab93c2 Finished KitchenAsync
+DEBUG 02-06 02:51:59.6450 – 54218fab-bd1b-4c77-9ff8-ebef838dfb82 Call Webclient
+DEBUG 02-06 02:51:59.9294 – 54218fab-bd1b-4c77-9ff8-ebef838dfb82 Finished KitchenAsync
