@@ -15,5 +15,5 @@ jobs:
         dotnet-version: 3.1.100
         entrypoint: /LogParser
     - name: Build with dotnet
-      run: cd LogParser
+      run: cd LogParser &
         dotnet build --configuration Release
