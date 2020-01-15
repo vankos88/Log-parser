@@ -22,7 +22,7 @@
       <CheckBox Margin="12,0,0,6" VerticalAlignment="Bottom" IsChecked="{Binding Model.IncludeFileInfo}">Include file info in result</CheckBox>
     </StackPanel>
     <StackPanel Margin="0,32,0,0" Orientation="Horizontal">
-      <Button HorizontalAlignment="Left" Margin="6,1,0,6" Width="75" Height="23" Command="{Binding Search,Binding CleanDisplay}">
+      <Button HorizontalAlignment="Left" Margin="6,1,0,6" Width="75" Height="23" Command="{Binding Search}">
         <TextBlock>Search</TextBlock>
       </Button>
       <Button HorizontalAlignment="Left" Margin="12,1,0,6" Width="75" Height="23" Command="{Binding Cancel}">
@@ -30,7 +30,11 @@
       </Button>
     </StackPanel>
     <Grid RowDefinitions="*, Auto" ColumnDefinitions="*"  Width="1024" Height="287">
-      <ListBox Grid.Row="0" Grid.Column="0"  Items="{Binding Model.ResultDisplay}" />
+      <ListBox Grid.Row="0" Grid.Column="0"  Items="{Binding Model.ResultDisplay}" SelectedItem="{Binding Model.ResultDisplaySelectedItem}">
+        <ListBox.KeyBindings>
+          <KeyBinding Gesture="Ctrl+C" Command="{Binding Copy}" />
+        </ListBox.KeyBindings>
+        </ListBox>
     </Grid>
     <TextBlock Margin="6,12,0,1" Text="{Binding Model.ElapsedTime}"></TextBlock>
   </StackPanel>

@@ -22,6 +22,7 @@ namespace LogParser.Models
         public string SearchLine { get; set; }
         public bool IncludeFileInfo { get; set; }
         public bool IncludeSubdirectories { get; set; }
+        public string ResultDisplaySelectedItem { get; set; }
 
         public List<string> ResultDisplay 
         {

@@ -15,6 +15,8 @@ namespace LogParser.ViewModels
         public ReactiveCommand<Unit, Unit> Search { get; }
         public ReactiveCommand<Unit, Unit> FindFiles { get; }
         public ReactiveCommand<Unit, Unit> Cancel { get; }
+        public ReactiveCommand<Unit, Unit> Copy { get; }
+
 
 
         public LogParserViewModel(LogParserManager manager)
@@ -30,8 +32,8 @@ namespace LogParser.ViewModels
 
             Search = ReactiveCommand.CreateFromTask(async  () => { Model.CleanDisplay(); await _manager.Search(Model); }); 
             FindFiles = ReactiveCommand.CreateFromTask(async () => {  Model.CleanDisplay(); await _manager.FindFiles(Model); });
-
             Cancel = ReactiveCommand.Create(() => _manager.Cancel());
+            Copy = ReactiveCommand.CreateFromTask(() => _manager.CopyToClipboard(Model.ResultDisplaySelectedItem));
         }
     }
 }

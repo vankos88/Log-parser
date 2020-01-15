@@ -40,6 +40,37 @@ namespace LogParser.Managers
 
         }
 
+        public async Task CopyToClipboard(string item)
+        {
+            await TextCopy.Clipboard.SetTextAsync(
+                item.Contains("File:") ?
+                item.Split(new char[] { '\r', '\n' }).ToArray()[0].Remove(0, 6)
+                : item
+                );
+        }
+
+        public void Cancel()
+        {
+            if (_cts != null)
+                _cts.Cancel();
+        }
+
+        public async Task Search(LogParserModel model)
+        {
+            if (model.Validate())
+            {
+                Stopwatch elapsedTime = new Stopwatch();
+                elapsedTime.Start();
+
+                var result = await Task.Run(() => ProcessFiles(model));
+
+                model.ResultDisplay = result;
+
+                elapsedTime.Stop();
+                model.ElapsedTime = $"Elapsed time: {elapsedTime.Elapsed.ToString()}";
+            }
+        }
+
         private List<string> GetFiles(LogParserModel model)
         {
             var paths = model.Paths.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Distinct().ToArray();
@@ -69,28 +100,6 @@ namespace LogParser.Managers
             }
 
             return list.Distinct().ToList();
-        }
-
-        public void Cancel()
-        {
-            if (_cts != null)
-                _cts.Cancel();
-        }
-
-        public async Task Search(LogParserModel model)
-        {
-            if (model.Validate())
-            {
-                Stopwatch elapsedTime = new Stopwatch();
-                elapsedTime.Start();
-
-                var result = await Task.Run(() => ProcessFiles(model));
-
-                model.ResultDisplay = result;
-
-                elapsedTime.Stop();
-                model.ElapsedTime = $"Elapsed time: {elapsedTime.Elapsed.ToString()}";
-            }
         }
 
         private List<string> ProcessFiles(LogParserModel model)
