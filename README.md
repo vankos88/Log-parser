@@ -1,6 +1,6 @@
 # Log parser  ![](https://github.com/vankos88/Log-parser/workflows/Build/badge.svg)
 
-Crossplatform fast log parser based on avaloniaUI and .Net Core 3.0
+Crossplatform fast log parser based on avaloniaUI and .Net Core 3.1
 
 With this tool it's easy to search line in the directories with big text files, e.g Guid. Tool can unzip rar, zip, tar, gzip archives with text files.
 
