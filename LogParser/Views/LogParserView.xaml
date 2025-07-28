@@ -30,7 +30,7 @@
       </Button>
     </StackPanel>
     <Grid RowDefinitions="*, Auto" ColumnDefinitions="*"  Width="1024" Height="287">
-      <ListBox Grid.Row="0" Grid.Column="0"  Items="{Binding Model.ResultDisplay}" SelectedItem="{Binding Model.ResultDisplaySelectedItem}">
+      <ListBox Grid.Row="0" Grid.Column="0"  ItemsSource="{Binding Model.ResultDisplay}" SelectedItem="{Binding Model.ResultDisplaySelectedItem}">
         <ListBox.KeyBindings>
           <KeyBinding Gesture="Ctrl+C" Command="{Binding Copy}" />
         </ListBox.KeyBindings>

@@ -1,10 +1,9 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="clr-namespace:LogParser.ViewModels;assembly=LogParser"
-        xmlns:views="clr-namespace:LogParser.Views"
         Width="1036" Height="800"
         x:Class="LogParser.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="LogParser"
         Content="{Binding LogParser}">
+
 </Window>

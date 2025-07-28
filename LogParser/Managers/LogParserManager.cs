@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TextCopy;
 
 namespace LogParser.Managers
 {
@@ -42,7 +43,7 @@ namespace LogParser.Managers
 
         public async Task CopyToClipboard(string item)
         {
-            await TextCopy.Clipboard.SetTextAsync(
+            await ClipboardService.SetTextAsync(
                 item.Contains("File:") ?
                 item.Split(new char[] { '\r', '\n' }).ToArray()[0].Remove(0, 6)
                 : item
